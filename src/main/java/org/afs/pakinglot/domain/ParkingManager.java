@@ -3,10 +3,12 @@ package org.afs.pakinglot.domain;
 import org.afs.pakinglot.domain.strategies.AvailableRateStrategy;
 import org.afs.pakinglot.domain.strategies.MaxAvailableStrategy;
 import org.afs.pakinglot.domain.strategies.SequentiallyStrategy;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class ParkingManager {
     private final List<ParkingLot> parkingLots;
     private final ParkingBoy standardParkingBoy;
