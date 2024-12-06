@@ -20,7 +20,7 @@ public class ParkingManagerController {
         this.parkingManager = parkingManager;
     }
 
-    @GetMapping("/parkingLots")
+    @GetMapping("/parking-lots")
     public ResponseEntity<List<ParkingLot>> getParkingLots() {
         return ResponseEntity.ok(parkingManager.getParkingLots());
     }

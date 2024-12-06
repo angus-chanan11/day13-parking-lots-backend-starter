@@ -58,7 +58,7 @@ public class ParkingManagerControllerTest {
     @Test
     void should_return_parking_lots_when_getParkingLot() throws Exception {
 
-        mockMvc.perform(get("/api/v1/parking-manager/parkingLots"))
+        mockMvc.perform(get("/api/v1/parking-manager/parking-lots"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)));
     }
