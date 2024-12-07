@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.afs.pakinglot.domain.CarPlateGenerator;
 import org.afs.pakinglot.domain.ParkingManager;
 import org.afs.pakinglot.domain.ParkingLot;
-import org.afs.pakinglot.domain.Ticket;
 import org.afs.pakinglot.model.PlateNumber;
-import org.afs.pakinglot.model.PlateNumberAndParkingBoyType;
+import org.afs.pakinglot.model.PlateNumberAndParkingType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,12 +18,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -75,7 +71,7 @@ public class ParkingManagerControllerTest {
 
         mockMvc.perform(post("/api/v1/parking-manager/park")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(new PlateNumberAndParkingBoyType(plateNumber, parkingType))))
+                        .content(objectMapper.writeValueAsString(new PlateNumberAndParkingType(plateNumber, parkingType))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.plateNumber").isNotEmpty())
                 .andExpect(jsonPath("$.parkingLot").isNumber())
@@ -89,7 +85,7 @@ public class ParkingManagerControllerTest {
 
         mockMvc.perform(post("/api/v1/parking-manager/park")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(new PlateNumberAndParkingBoyType(plateNumber, invalidParkingType))))
+                        .content(objectMapper.writeValueAsString(new PlateNumberAndParkingType(plateNumber, invalidParkingType))))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Invalid parking strategy"));
     }
@@ -101,7 +97,7 @@ public class ParkingManagerControllerTest {
 
         mockMvc.perform(post("/api/v1/parking-manager/park")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(new PlateNumberAndParkingBoyType(invalidPlateNumber, parkingType))))
+                        .content(objectMapper.writeValueAsString(new PlateNumberAndParkingType(invalidPlateNumber, parkingType))))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Invalid plate number"));
     }

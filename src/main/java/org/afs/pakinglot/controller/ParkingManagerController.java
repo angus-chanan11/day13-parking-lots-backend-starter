@@ -6,7 +6,7 @@ import org.afs.pakinglot.domain.Ticket;
 import org.afs.pakinglot.mapper.ParkingLotDTOMapper;
 import org.afs.pakinglot.model.ParkingLotDTO;
 import org.afs.pakinglot.model.PlateNumber;
-import org.afs.pakinglot.model.PlateNumberAndParkingBoyType;
+import org.afs.pakinglot.model.PlateNumberAndParkingType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/parking-manager")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ParkingManagerController {
 
     private final ParkingManager parkingManager;
@@ -32,9 +33,9 @@ public class ParkingManagerController {
     }
 
     @PostMapping("/park")
-    public ResponseEntity<Ticket> park(@RequestBody PlateNumberAndParkingBoyType plateNumberAndParkingBoyType) {
-        String plateNumber = plateNumberAndParkingBoyType.getPlateNumber();
-        String parkingType = plateNumberAndParkingBoyType.getParkingBoyType();
+    public ResponseEntity<Ticket> park(@RequestBody PlateNumberAndParkingType plateNumberAndParkingType) {
+        String plateNumber = plateNumberAndParkingType.getPlateNumber();
+        String parkingType = plateNumberAndParkingType.getParkingType();
         Ticket ticket = parkingManager.park(plateNumber, parkingType);
         return ResponseEntity.ok(ticket);
     }
