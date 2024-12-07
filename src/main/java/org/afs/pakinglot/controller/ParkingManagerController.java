@@ -3,6 +3,8 @@ package org.afs.pakinglot.controller;
 import org.afs.pakinglot.domain.ParkingManager;
 import org.afs.pakinglot.domain.ParkingLot;
 import org.afs.pakinglot.domain.Ticket;
+import org.afs.pakinglot.mapper.ParkingLotDTOMapper;
+import org.afs.pakinglot.model.ParkingLotDTO;
 import org.afs.pakinglot.model.PlateNumber;
 import org.afs.pakinglot.model.PlateNumberAndParkingBoyType;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +18,17 @@ public class ParkingManagerController {
 
     private final ParkingManager parkingManager;
 
-    public ParkingManagerController(ParkingManager parkingManager) {
+    private final ParkingLotDTOMapper parkingLotDTOMapper;
+
+    public ParkingManagerController(ParkingManager parkingManager, ParkingLotDTOMapper parkingLotDTOMapper) {
         this.parkingManager = parkingManager;
+        this.parkingLotDTOMapper = parkingLotDTOMapper;
     }
 
     @GetMapping("/parking-lots")
-    public ResponseEntity<List<ParkingLot>> getParkingLots() {
-        return ResponseEntity.ok(parkingManager.getParkingLots());
+    public ResponseEntity<List<ParkingLotDTO>> getParkingLots() {
+        List<ParkingLot> parkingLots = parkingManager.getParkingLots();
+        return ResponseEntity.ok(parkingLotDTOMapper.toParkingLotDTOs(parkingLots));
     }
 
     @PostMapping("/park")
@@ -34,8 +40,8 @@ public class ParkingManagerController {
     }
 
     @PostMapping("/fetch")
-    public ResponseEntity<List<ParkingLot>> fetch(@RequestBody PlateNumber plateNumber) {
+    public ResponseEntity<List<ParkingLotDTO>> fetch(@RequestBody PlateNumber plateNumber) {
         List<ParkingLot> parkingLots = parkingManager.fetch(plateNumber.getPlateNumber());
-        return ResponseEntity.ok(parkingLots);
+        return ResponseEntity.ok(parkingLotDTOMapper.toParkingLotDTOs(parkingLots));
     }
 }

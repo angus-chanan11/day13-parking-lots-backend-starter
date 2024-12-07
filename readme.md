@@ -71,3 +71,9 @@ generate a ParkingManagerControllerTest class that has the below test case:
 All test case should follow the "given ... when ... then ..." format. Use parameterized test if possible.
 All test case must use MockMvc to test the controller. Jackson should be used to parse the response body.
 
+# ParkingLotDTOMapper
+
+generate a ParkingLotDTOMapper class that has the below method:
+
+- toParkingLotDTOs(List<ParkingLot> parkingLots) -> List<ParkingLotDTO>
+
