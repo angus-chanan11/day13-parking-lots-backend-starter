@@ -1,6 +1,7 @@
 package org.afs.pakinglot.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.afs.pakinglot.domain.CarPlateGenerator;
 import org.afs.pakinglot.domain.ParkingManager;
 import org.afs.pakinglot.domain.ParkingLot;
 import org.afs.pakinglot.domain.Ticket;
@@ -70,7 +71,7 @@ public class ParkingManagerControllerTest {
             "Super Smart"
     })
     void should_return_ticket_when_park_given_valid_parking(String parkingType) throws Exception {
-        String plateNumber = "ABC123";
+        String plateNumber = CarPlateGenerator.generatePlate();
 
         mockMvc.perform(post("/api/v1/parking-manager/park")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -83,7 +84,7 @@ public class ParkingManagerControllerTest {
 
     @Test
     void should_throw_exception_when_park_given_invalid_parking() throws Exception {
-        String plateNumber = "ABC123";
+        String plateNumber = CarPlateGenerator.generatePlate();
         String invalidParkingType = "INVALID";
 
         mockMvc.perform(post("/api/v1/parking-manager/park")
@@ -95,7 +96,7 @@ public class ParkingManagerControllerTest {
 
     @Test
     void should_return_parking_lots_when_fetch_given_plate_number() throws Exception {
-        String plateNumber = "ABC123";
+        String plateNumber = CarPlateGenerator.generatePlate();
         parkingManager.park(plateNumber, "Standard");
 
         mockMvc.perform(post("/api/v1/parking-manager/fetch")
@@ -107,7 +108,7 @@ public class ParkingManagerControllerTest {
 
     @Test
     void should_throw_exception_when_fetch_given_invalid_plate_number() throws Exception {
-        String invalidPlateNumber = "INVALID";
+        String invalidPlateNumber = CarPlateGenerator.generatePlate();
 
         mockMvc.perform(post("/api/v1/parking-manager/fetch")
                         .contentType(MediaType.APPLICATION_JSON)

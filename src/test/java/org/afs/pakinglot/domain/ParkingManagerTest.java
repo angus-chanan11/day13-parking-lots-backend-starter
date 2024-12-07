@@ -26,7 +26,7 @@ class ParkingManagerTest {
     })
     void should_return_ticket_when_park_given_standard_parking(String strategy, String expectedParkingLotName) {
         // given
-        String plateNumber = "ABC123";
+        String plateNumber = CarPlateGenerator.generatePlate();
 
         // when
         Ticket ticket = parkingManager.park(plateNumber, strategy);
@@ -42,7 +42,7 @@ class ParkingManagerTest {
     @Test
     void should_throw_exception_when_park_given_invalid_parking() {
         // given
-        String plateNumber = "ABC123";
+        String plateNumber = CarPlateGenerator.generatePlate();
         String invalidStrategy = "INVALID";
 
         // when & then
@@ -64,7 +64,7 @@ class ParkingManagerTest {
     @Test
     void should_return_parking_lots_when_fetch_given_plate_number() {
         // given
-        String plateNumber = "ABC123";
+        String plateNumber = CarPlateGenerator.generatePlate();
         Ticket ticket = parkingManager.park(plateNumber, "Standard");
 
         // when
@@ -79,7 +79,7 @@ class ParkingManagerTest {
     @Test
     void should_throw_exception_when_fetch_given_invalid_plate_number() {
         // given
-        String invalidPlateNumber = "INVALID123";
+        String invalidPlateNumber = CarPlateGenerator.generatePlate();
 
         // when & then
         assertThrows(IllegalArgumentException.class, () -> parkingManager.fetch(invalidPlateNumber));
