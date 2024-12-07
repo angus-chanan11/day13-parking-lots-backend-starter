@@ -30,11 +30,18 @@ public class ParkingManager {
     }
 
     public Ticket park(String plateNumber, String strategy) {
+        if (!isPlateNumberValid(plateNumber)) {
+            throw new IllegalArgumentException("Invalid plate number");
+        }
         ParkingBoy parkingBoy = getParkingBoy(strategy);
         return parkingBoy.park(new Car(plateNumber));
     }
 
     public List<ParkingLot> fetch(String plateNumber) {
+        if (!isPlateNumberValid(plateNumber)) {
+            throw new IllegalArgumentException("Invalid plate number");
+        }
+
         Ticket ticketToFetch = parkingLots.stream()
                 .flatMap(parkingLot -> parkingLot.getTickets().stream()
                         .filter(ticket -> ticket.plateNumber().equals(plateNumber)))
@@ -57,5 +64,10 @@ public class ParkingManager {
             case SUPER_SMART_BOY -> superSmartParkingBoy;
             default -> throw new IllegalArgumentException("Invalid parking strategy");
         };
+    }
+
+    // check if plateNumber start with 2 letters and followed by "-" and 4 digits
+    private boolean isPlateNumberValid(String plateNumber) {
+        return plateNumber.matches("^[A-Z]{2}-\\d{4}$");
     }
 }

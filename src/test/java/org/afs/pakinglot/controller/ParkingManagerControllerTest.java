@@ -95,6 +95,18 @@ public class ParkingManagerControllerTest {
     }
 
     @Test
+    void should_throw_exception_when_park_given_invalid_plate_number() throws Exception {
+        String invalidPlateNumber = "INVALID";
+        String parkingType = "Standard";
+
+        mockMvc.perform(post("/api/v1/parking-manager/park")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(new PlateNumberAndParkingBoyType(invalidPlateNumber, parkingType))))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Invalid plate number"));
+    }
+
+    @Test
     void should_return_parking_lots_when_fetch_given_plate_number() throws Exception {
         String plateNumber = CarPlateGenerator.generatePlate();
         parkingManager.park(plateNumber, "Standard");
@@ -115,5 +127,16 @@ public class ParkingManagerControllerTest {
                         .content(objectMapper.writeValueAsString(Map.of("plateNumber", invalidPlateNumber))))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Car not found"));
+    }
+
+    @Test
+    void should_throw_exception_when_fetch_given_invalid_plate_number() throws Exception {
+        String invalidPlateNumber = "INVALID";
+
+        mockMvc.perform(post("/api/v1/parking-manager/fetch")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(new PlateNumber(invalidPlateNumber))))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Invalid plate number"));
     }
 }

@@ -50,6 +50,16 @@ class ParkingManagerTest {
     }
 
     @Test
+    void should_throw_exception_when_park_given_invalid_plate_number() {
+        // given
+        String plateNumber = "INVALID";
+        String invalidStrategy = "Standard";
+
+        // when & then
+        assertThrows(IllegalArgumentException.class, () -> parkingManager.park(plateNumber, invalidStrategy));
+    }
+
+    @Test
     void should_return_parking_lots_when_getParkingLot() {
         // given
 
@@ -83,5 +93,14 @@ class ParkingManagerTest {
 
         // when & then
         assertThrows(IllegalArgumentException.class, () -> parkingManager.fetch(invalidPlateNumber));
+    }
+
+    @Test
+    void should_throw_exception_when_fetch_given_invalid_plate_number() {
+        // given
+        String plateNumber = "INVALID";
+
+        // when & then
+        assertThrows(IllegalArgumentException.class, () -> parkingManager.fetch(plateNumber));
     }
 }
