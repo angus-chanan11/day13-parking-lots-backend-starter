@@ -77,7 +77,7 @@ class ParkingManagerTest {
     }
 
     @Test
-    void should_throw_exception_when_fetch_given_invalid_plate_number() {
+    void should_throw_exception_when_fetch_given_not_existing_plate_number() {
         // given
         String invalidPlateNumber = CarPlateGenerator.generatePlate();
 

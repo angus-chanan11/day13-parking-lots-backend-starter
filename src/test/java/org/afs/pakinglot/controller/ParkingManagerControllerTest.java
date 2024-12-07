@@ -107,7 +107,7 @@ public class ParkingManagerControllerTest {
     }
 
     @Test
-    void should_throw_exception_when_fetch_given_invalid_plate_number() throws Exception {
+    void should_throw_exception_when_fetch_given_not_existing_plate_number() throws Exception {
         String invalidPlateNumber = CarPlateGenerator.generatePlate();
 
         mockMvc.perform(post("/api/v1/parking-manager/fetch")
