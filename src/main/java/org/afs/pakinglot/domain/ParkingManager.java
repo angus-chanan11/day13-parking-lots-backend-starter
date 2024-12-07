@@ -37,7 +37,7 @@ public class ParkingManager {
         return parkingBoy.park(new Car(plateNumber));
     }
 
-    public List<ParkingLot> fetch(String plateNumber) {
+    public Car fetch(String plateNumber) {
         if (!isPlateNumberValid(plateNumber)) {
             throw new IllegalArgumentException("Invalid plate number");
         }
@@ -48,9 +48,7 @@ public class ParkingManager {
                         .findFirst()
                         .orElseThrow(() -> new IllegalArgumentException("Car not found"));
 
-        standardParkingBoy.fetch(ticketToFetch);
-
-        return getParkingLots();
+        return standardParkingBoy.fetch(ticketToFetch);
     }
 
     public List<ParkingLot> getParkingLots() {

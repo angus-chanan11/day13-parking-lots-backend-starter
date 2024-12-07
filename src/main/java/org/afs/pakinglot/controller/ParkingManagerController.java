@@ -1,5 +1,6 @@
 package org.afs.pakinglot.controller;
 
+import org.afs.pakinglot.domain.Car;
 import org.afs.pakinglot.domain.ParkingManager;
 import org.afs.pakinglot.domain.ParkingLot;
 import org.afs.pakinglot.domain.Ticket;
@@ -41,8 +42,8 @@ public class ParkingManagerController {
     }
 
     @PostMapping("/fetch")
-    public ResponseEntity<List<ParkingLotDTO>> fetch(@RequestBody PlateNumber plateNumber) {
-        List<ParkingLot> parkingLots = parkingManager.fetch(plateNumber.getPlateNumber());
-        return ResponseEntity.ok(parkingLotDTOMapper.toParkingLotDTOs(parkingLots));
+    public ResponseEntity<Car> fetch(@RequestBody PlateNumber plateNumber) {
+        Car car = parkingManager.fetch(plateNumber.getPlateNumber());
+        return ResponseEntity.ok(car);
     }
 }

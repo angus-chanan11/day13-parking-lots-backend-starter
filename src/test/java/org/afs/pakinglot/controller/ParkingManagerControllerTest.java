@@ -111,7 +111,7 @@ public class ParkingManagerControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(new PlateNumber(plateNumber))))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(3)));
+                .andExpect(jsonPath("$.plateNumber").value(plateNumber));
     }
 
     @Test

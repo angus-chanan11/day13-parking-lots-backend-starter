@@ -72,18 +72,18 @@ class ParkingManagerTest {
     }
 
     @Test
-    void should_return_parking_lots_when_fetch_given_plate_number() {
+    void should_return_car_when_fetch_given_plate_number() {
         // given
         String plateNumber = CarPlateGenerator.generatePlate();
         Ticket ticket = parkingManager.park(plateNumber, "Standard");
 
         // when
-        List<ParkingLot> parkingLots = parkingManager.fetch(plateNumber);
+        Car car = parkingManager.fetch(plateNumber);
 
         // then
-        assertNotNull(parkingLots);
-        assertEquals(3, parkingLots.size());
-        assertFalse(parkingLots.stream().anyMatch(parkingLot -> parkingLot.contains(ticket)));
+        assertNotNull(car);
+        assertEquals(plateNumber, car.plateNumber());
+        assertFalse(parkingManager.getParkingLots().stream().anyMatch(parkingLot -> parkingLot.contains(ticket)));
     }
 
     @Test
