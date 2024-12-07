@@ -43,9 +43,6 @@ public class ParkingManager {
             throw new IllegalArgumentException("Invalid plate number");
         }
 
-        System.out.println("plateNumber: " + plateNumber);
-        System.out.println("parkingLots: " + parkingLots);
-
         Ticket ticketToFetch = parkingLots.stream()
                 .flatMap(parkingLot -> parkingLot.getTickets().stream()
                         .filter(ticket -> ticket.plateNumber().equals(plateNumber)))

@@ -114,7 +114,6 @@ public class ParkingManagerControllerTest {
     void should_return_parking_lots_when_fetch_given_plate_number() throws Exception {
         String plateNumber = CarPlateGenerator.generatePlate();
         parkingManager.park(plateNumber, "Standard");
-        System.out.println(parkingManager.getParkingLots());
 
         mockMvc.perform(post("/api/v1/parking-manager/fetch")
                         .contentType(MediaType.APPLICATION_JSON)

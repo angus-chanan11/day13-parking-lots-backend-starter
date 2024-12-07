@@ -95,13 +95,4 @@ public class ParkingLot {
                 .findFirst()
                 .orElseThrow(NoAvailablePositionException::new);
     }
-
-    public String toString() {
-        return "ParkingLot{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", tickets=" + tickets +
-                ", capacity=" + capacity +
-                '}';
-    }
 }
