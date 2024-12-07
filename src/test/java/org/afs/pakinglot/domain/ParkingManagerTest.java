@@ -1,5 +1,6 @@
 package org.afs.pakinglot.domain;
 
+import org.afs.pakinglot.domain.exception.NoAvailablePositionException;
 import org.afs.pakinglot.domain.exception.UnrecognizedTicketException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,6 @@ class ParkingManagerTest {
         // then
         assertNotNull(ticket);
         assertEquals(plateNumber, ticket.plateNumber());
-        System.out.println();
         assertTrue(parkingManager.getParkingLots().stream()
                 .anyMatch(parkingLot -> parkingLot.getName().equals(expectedParkingLotName) && parkingLot.contains(ticket)));
     }
@@ -58,6 +58,24 @@ class ParkingManagerTest {
 
         // when & then
         assertThrows(IllegalArgumentException.class, () -> parkingManager.park(plateNumber, invalidStrategy));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "Standard",
+            "Smart",
+            "Super Smart"
+    })
+    void should_throw_exception_when_park_given_full_lots(String strategy) {
+        // given
+        int totalParkingSpace = parkingManager.getParkingLots().stream().mapToInt(ParkingLot::getCapacity).sum();
+        for (int iteration = 0; iteration < totalParkingSpace; iteration++) {
+            parkingManager.park(CarPlateGenerator.generatePlate(), strategy);
+        }
+        String plateNumber = CarPlateGenerator.generatePlate();
+
+        // when & then
+        assertThrows(NoAvailablePositionException.class, () -> parkingManager.park(plateNumber, strategy));
     }
 
     @Test
