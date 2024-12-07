@@ -1,5 +1,6 @@
 package org.afs.pakinglot.domain;
 
+import org.afs.pakinglot.domain.exception.UnrecognizedTicketException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -92,7 +93,7 @@ class ParkingManagerTest {
         String invalidPlateNumber = CarPlateGenerator.generatePlate();
 
         // when & then
-        assertThrows(IllegalArgumentException.class, () -> parkingManager.fetch(invalidPlateNumber));
+        assertThrows(UnrecognizedTicketException.class, () -> parkingManager.fetch(invalidPlateNumber));
     }
 
     @Test

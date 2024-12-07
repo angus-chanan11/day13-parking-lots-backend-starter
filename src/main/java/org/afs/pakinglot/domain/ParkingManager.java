@@ -1,5 +1,6 @@
 package org.afs.pakinglot.domain;
 
+import org.afs.pakinglot.domain.exception.UnrecognizedTicketException;
 import org.afs.pakinglot.domain.strategies.AvailableRateStrategy;
 import org.afs.pakinglot.domain.strategies.MaxAvailableStrategy;
 import org.afs.pakinglot.domain.strategies.SequentiallyStrategy;
@@ -46,7 +47,7 @@ public class ParkingManager {
                 .flatMap(parkingLot -> parkingLot.getTickets().stream()
                         .filter(ticket -> ticket.plateNumber().equals(plateNumber)))
                         .findFirst()
-                        .orElseThrow(() -> new IllegalArgumentException("Car not found"));
+                        .orElseThrow(UnrecognizedTicketException::new);
 
         return standardParkingBoy.fetch(ticketToFetch);
     }

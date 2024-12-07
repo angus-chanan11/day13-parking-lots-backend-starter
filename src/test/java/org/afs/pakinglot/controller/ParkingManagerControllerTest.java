@@ -121,7 +121,7 @@ public class ParkingManagerControllerTest {
         mockMvc.perform(post("/api/v1/parking-manager/fetch")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(new PlateNumber(invalidPlateNumber))))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isNotFound())
                 .andExpect(content().string("Car not found"));
     }
 
