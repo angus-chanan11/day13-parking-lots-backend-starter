@@ -43,6 +43,9 @@ public class ParkingManager {
             throw new IllegalArgumentException("Invalid plate number");
         }
 
+        System.out.println("plateNumber: " + plateNumber);
+        System.out.println("parkingLots: " + parkingLots);
+
         Ticket ticketToFetch = parkingLots.stream()
                 .flatMap(parkingLot -> parkingLot.getTickets().stream()
                         .filter(ticket -> ticket.plateNumber().equals(plateNumber)))
@@ -54,6 +57,10 @@ public class ParkingManager {
 
     public List<ParkingLot> getParkingLots() {
         return parkingLots;
+    }
+
+    public void clearAllParkingLots() {
+        parkingLots.forEach(ParkingLot::removeAllTickets);
     }
 
     private ParkingBoy getParkingBoy(String strategy) {

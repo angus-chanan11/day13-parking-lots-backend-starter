@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ParkingManagerExceptionHandler {
 
-    // Return 400 Bad Request when IllegalArgumentException or NoAvailablePositionException is thrown
-    @ExceptionHandler({IllegalArgumentException.class, NoAvailablePositionException.class})
+    // Return 400 Bad Request when IllegalArgumentException is thrown
+    @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
@@ -20,5 +20,11 @@ public class ParkingManagerExceptionHandler {
     @ExceptionHandler(UnrecognizedTicketException.class)
     public ResponseEntity<String> handleUnrecognizedTicketException(UnrecognizedTicketException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Car not found");
+    }
+
+    // Return 503 Service Unavailable NoAvailablePositionException is thrown
+    @ExceptionHandler(NoAvailablePositionException.class)
+    public ResponseEntity<String> handleNoAvailablePositionException(NoAvailablePositionException ex) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("No available position");
     }
 }

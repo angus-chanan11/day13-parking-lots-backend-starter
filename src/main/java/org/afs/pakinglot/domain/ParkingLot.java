@@ -82,6 +82,10 @@ public class ParkingLot {
         return tickets.keySet().stream().toList();
     }
 
+    public void removeAllTickets() {
+        tickets.clear();
+    }
+
     private int getEmptyPositionNumber() {
         List<Integer> occupiedPositions = tickets.keySet().stream()
                 .map(Ticket::position)
@@ -90,5 +94,14 @@ public class ParkingLot {
                 .filter(position -> !occupiedPositions.contains(position))
                 .findFirst()
                 .orElseThrow(NoAvailablePositionException::new);
+    }
+
+    public String toString() {
+        return "ParkingLot{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", tickets=" + tickets +
+                ", capacity=" + capacity +
+                '}';
     }
 }

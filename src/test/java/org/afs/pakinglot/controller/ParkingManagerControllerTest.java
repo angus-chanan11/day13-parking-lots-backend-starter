@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.afs.pakinglot.domain.CarPlateGenerator;
 import org.afs.pakinglot.domain.ParkingManager;
 import org.afs.pakinglot.domain.ParkingLot;
+import org.afs.pakinglot.mapper.ParkingLotDTOMapper;
 import org.afs.pakinglot.model.PlateNumber;
 import org.afs.pakinglot.model.PlateNumberAndParkingType;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,10 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
-
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -41,15 +39,9 @@ public class ParkingManagerControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private List<ParkingLot> parkingLots;
-
     @BeforeEach
     void setUp() {
-        parkingLots = List.of(
-                new ParkingLot(1, "The Plaza Park", 9),
-                new ParkingLot(2, "City Mall Garage", 12),
-                new ParkingLot(3, "Office Tower Parking", 9)
-        );
+        parkingManager.clearAllParkingLots();
     }
 
     @Test
@@ -103,9 +95,26 @@ public class ParkingManagerControllerTest {
     }
 
     @Test
+    void should_throw_exception_when_park_given_no_position_left() throws Exception {
+        String invalidPlateNumber = CarPlateGenerator.generatePlate();
+        String parkingType = "Standard";
+        int totalParkingSpace = parkingManager.getParkingLots().stream().mapToInt(ParkingLot::getAvailableCapacity).sum();
+        for (int iteration = 0; iteration < totalParkingSpace; iteration++) {
+            parkingManager.park(CarPlateGenerator.generatePlate(), parkingType);
+        }
+
+        mockMvc.perform(post("/api/v1/parking-manager/park")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(new PlateNumberAndParkingType(invalidPlateNumber, parkingType))))
+                .andExpect(status().isServiceUnavailable())
+                .andExpect(content().string("No available position"));
+    }
+
+    @Test
     void should_return_parking_lots_when_fetch_given_plate_number() throws Exception {
         String plateNumber = CarPlateGenerator.generatePlate();
         parkingManager.park(plateNumber, "Standard");
+        System.out.println(parkingManager.getParkingLots());
 
         mockMvc.perform(post("/api/v1/parking-manager/fetch")
                         .contentType(MediaType.APPLICATION_JSON)
