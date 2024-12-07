@@ -4,6 +4,9 @@ package org.afs.pakinglot.domain;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 import org.afs.pakinglot.domain.exception.NoAvailablePositionException;
 import org.afs.pakinglot.domain.exception.UnrecognizedTicketException;
 
@@ -42,7 +45,7 @@ public class ParkingLot {
             throw new NoAvailablePositionException();
         }
 
-        Ticket ticket = new Ticket(car.plateNumber(), tickets.size() + 1, this.id);
+        Ticket ticket = new Ticket(car.plateNumber(), getEmptyPositionNumber(), this.id);
         tickets.put(ticket, car);
         return ticket;
     }
@@ -79,4 +82,13 @@ public class ParkingLot {
         return tickets.keySet().stream().toList();
     }
 
+    private int getEmptyPositionNumber() {
+        List<Integer> occupiedPositions = tickets.keySet().stream()
+                .map(Ticket::position)
+                .toList();
+        return IntStream.range(0, capacity)
+                .filter(position -> !occupiedPositions.contains(position))
+                .findFirst()
+                .orElseThrow(NoAvailablePositionException::new);
+    }
 }
